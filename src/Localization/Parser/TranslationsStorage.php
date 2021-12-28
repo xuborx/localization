@@ -23,14 +23,14 @@ class TranslationsStorage
     {
         self::store($language);
 
-        if (!isset(self::$translations[$key])) {
+        if (!isset(self::$translations[$language][$key])) {
             throw new TranslationKeyNotFoundException(
-              'Key ' . $key . ' not found',
+              'Key ' . $key . ' not found for language code ' . $language,
               500
             );
         }
 
-        return self::$translations[$key];
+        return self::$translations[$language][$key];
     }
 
     /**
@@ -40,7 +40,7 @@ class TranslationsStorage
     public static function getAll(string $language): array
     {
         self::store($language);
-        return self::$translations;
+        return self::$translations[$language];
     }
 
     /**
@@ -50,7 +50,7 @@ class TranslationsStorage
      */
     private static function store(string $language): void
     {
-        if (empty(self::$translations)) {
+        if (!isset(self::$translations[$language])) {
             self::$translations = Parser::parse($language);
         }
     }

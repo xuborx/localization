@@ -24,14 +24,14 @@ class Parser
             );
         }
 
-        return self::convertFileToKeyValue($localizationFile);
+        return self::convertFileToKeyValue($localizationFile, $language);
     }
 
     /**
      * @param string $fileContent
      * @return array
      */
-    private static function convertFileToKeyValue(string $fileContent): array
+    private static function convertFileToKeyValue(string $fileContent, string $language): array
     {
         $translationsStrings = explode("\n", $fileContent);
         $translationsStrings = array_filter($translationsStrings);
@@ -43,7 +43,7 @@ class Parser
                 $string = trim($string);
                 $key = strtok($string, '=');
                 $value = substr($string, strpos($string, "=") + 1);
-                $translationsKeyValue[$key] = $value;
+                $translationsKeyValue[$language][$key] = $value;
             }
         }
 
